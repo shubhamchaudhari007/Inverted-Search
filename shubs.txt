@@ -1,0 +1,11 @@
+shubham Sanjay Chaudhari
+Wrong allocation for arr: you used malloc(sizeof(struct ListNode *)) which allocates space for one pointer only. You must allocate k pointers: malloc(sizeof(struct ListNode*) * k).
+
+Size calculation / loop logic: you recomputed size inside the loop and used a confusing if(!size) size = 1; hack. The correct approach is to compute base = length / k and extra = length % k once, then give the first extra parts one extra node each.
+
+Unsafe pointer dereferences: your code used expressions like temp->next->next without checking for NULL, which can crash when the list end is reached.
+
+You never filled arr fully when length < k: parts must be NULL for empty parts; the fixed loop sets arr[i] to cur (possibly NULL), which is correct.
+
+Infinite loop risk: your while(temp != NULL) loop and internal size handling made it easy to never exit or to mishandle edges. A clean for (i=0..k-1) loop is simpler and safer.
+1 2 3 4 5 6 7 8 9 10
